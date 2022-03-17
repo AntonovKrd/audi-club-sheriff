@@ -26,10 +26,10 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "dateBirth", nullable = false)
+    @Column(name = "date_birth", nullable = false)
     private Date dateBirth;
 
-    @Column(name = "tgNickname", nullable = false, unique = true)
+    @Column(name = "tg_nickname", nullable = false, unique = true)
     private String tgNickname;
 
     @Column(name = "phone", nullable = false, unique = true)

@@ -20,7 +20,7 @@ public class Vehicle {
     @GeneratedValue(generator = "base64_generated_id")
     private Long id;
 
-    @Column(name = "licensePlate", nullable = false, unique = true)
+    @Column(name = "license_plate", nullable = false, unique = true)
     private String licensePlate;
 
     @Column(name = "model", nullable = false)
@@ -31,6 +31,6 @@ public class Vehicle {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @Fetch(value = FetchMode.SELECT)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 }
