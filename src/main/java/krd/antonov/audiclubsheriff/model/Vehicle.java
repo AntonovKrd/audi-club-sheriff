@@ -27,7 +27,7 @@ public class Vehicle {
     private String model;
 
     @Column(name = "year", nullable = false)
-    private String year;
+    private Integer year;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @Fetch(value = FetchMode.SELECT)
