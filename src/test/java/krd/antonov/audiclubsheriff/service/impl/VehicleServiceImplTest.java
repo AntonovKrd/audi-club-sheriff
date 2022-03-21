@@ -2,7 +2,7 @@ package krd.antonov.audiclubsheriff.service.impl;
 
 import krd.antonov.audiclubsheriff.UnitTest;
 import krd.antonov.audiclubsheriff.model.Vehicle;
-import krd.antonov.audiclubsheriff.repository.VehicleRepository;
+import krd.antonov.audiclubsheriff.service.VehicleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,14 +14,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class VehicleServiceImplTest {
 
     @Spy
-    private VehicleRepository vehicleRepository;
+    private VehicleService vehicleService;
 
     @Test
     @DisplayName("existByLicensePlate returns OK")
     public void existByLicensePlate() {
         Vehicle vehicle = createMockEntity();
-        Mockito.when(vehicleRepository.existsByLicensePlate(vehicle.getLicensePlate())).thenReturn(true);
-        assertThat(vehicleRepository.existsByLicensePlate(vehicle.getLicensePlate())).isTrue();
+        Mockito.when(vehicleService.existByLicensePlate(vehicle.getLicensePlate())).thenReturn(true);
+        assertThat(vehicleService.existByLicensePlate(vehicle.getLicensePlate())).isTrue();
     }
 
     private Vehicle createMockEntity() {

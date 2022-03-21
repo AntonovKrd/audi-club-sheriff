@@ -3,12 +3,14 @@ package krd.antonov.audiclubsheriff.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Table(name = "users")
@@ -27,7 +29,7 @@ public class User {
     private String name;
 
     @Column(name = "date_birth", nullable = false)
-    private Date dateBirth;
+    private LocalDate dateBirth;
 
     @Column(name = "tg_nickname", nullable = false, unique = true)
     private String tgNickname;
@@ -49,5 +51,18 @@ public class User {
         vehicle.setUser(null);
         if (vehicles == null) return;
         vehicles.remove(vehicle);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
