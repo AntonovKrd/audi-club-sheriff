@@ -7,7 +7,7 @@ import krd.antonov.audiclubsheriff.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(String name, Date dateBirth, String tgNickname, String phone) {
+    public User create(String name, LocalDate dateBirth, String tgNickname, String phone) {
         User user = new User().setName(name).setDateBirth(dateBirth).setTgNickname(tgNickname).setPhone(phone);
         userRepository.save(user);
         return user;
