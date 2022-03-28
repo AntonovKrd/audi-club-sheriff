@@ -20,11 +20,11 @@ public class UserServiceImplTest {
 
     @Test
     public void create() {
-        Mockito.when(userService.create("Vladimir",
+        Mockito.when(userService.create("test","Vladimir",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
                 "89181144744")).thenReturn(getMockEntity());
-        AssertionsForClassTypes.assertThat(userService.create("Vladimir",
+        AssertionsForClassTypes.assertThat(userService.create("test","Vladimir",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
                 "89181144744")).isNotNull();
