@@ -40,6 +40,9 @@ public class User {
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
+    @Column(name = "date_registration", nullable = false)
+    private LocalDate dateRegistration;
+
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vehicle> vehicles;
@@ -59,13 +62,13 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id != null && Objects.equals(id, user.id);
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getChatId(), user.getChatId()) && Objects.equals(getDateBirth(), user.getDateBirth()) && Objects.equals(getTgNickname(), user.getTgNickname()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getDateRegistration(), user.getDateRegistration()) && Objects.equals(getVehicles(), user.getVehicles());
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(getId(), getName(), getChatId(), getDateBirth(), getTgNickname(), getPhone(), getDateRegistration(), getVehicles());
     }
 }
