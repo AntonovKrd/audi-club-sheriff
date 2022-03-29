@@ -1,5 +1,6 @@
 package krd.antonov.audiclubsheriff.telegram;
 
+import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
 import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
 import krd.antonov.audiclubsheriff.telegram.handlers.MessageHandler;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class AudiSheriffBot extends SpringWebhookBot {
         }
     }
 
-    private BotApiMethod<?> handleUpdate(Update update) {
+    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException {
         Message message = update.getMessage();
         BotApiMethod<?> answer = null;
         if (message != null) {
