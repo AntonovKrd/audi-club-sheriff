@@ -24,7 +24,7 @@ public class TempData {
     private String chatId;
 
     @Column(name = "stage", nullable = false)
-    private int stage;
+    private Integer stage;
 
     @Column(name = "value")
     private String value;
