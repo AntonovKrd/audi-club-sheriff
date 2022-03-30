@@ -21,14 +21,14 @@ public class TempDataServiceImpl implements TempDataService {
 
     @Override
     @Transactional
-    public TempData create(String chatId, int stage, String value) {
+    public TempData create(String chatId, String stage, String value) {
         TempData tempData = new TempData().setChatId(chatId).setStage(stage).setValue(value).setDateEvent(LocalDate.now());
         tempDataRepository.save(tempData);
         return tempData;
     }
 
     @Override
-    public TempData getLastStageByChatId(String chatId) throws TempDataNotFoundException {
+    public TempData getLastStageTempDataByChatId(String chatId) throws TempDataNotFoundException {
         return tempDataRepository.findFirstByChatIdOrderByStage(chatId).orElseThrow(() -> new TempDataNotFoundException(chatId));
     }
 
