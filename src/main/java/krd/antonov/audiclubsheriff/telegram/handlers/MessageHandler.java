@@ -111,11 +111,15 @@ public class MessageHandler {
                 }
             }
             case 5 -> {
-                tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message);
-                telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
-                manageUsersService.registerUser(chatId);
-                sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
-                keyboardSetter.setMainMenuKeyboard(sendMessage);
+                if (TempDataChecker.isLicensePlateCorrect(message)){
+                    tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message);
+                    telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
+                    manageUsersService.registerUser(chatId);
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
+                    keyboardSetter.setMainMenuKeyboard(sendMessage);
+                } else {
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_LICENSE_PLATE_MESSAGE.getMessage());
+                }
             }
         }
         return sendMessage;
