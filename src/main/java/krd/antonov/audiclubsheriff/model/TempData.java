@@ -2,6 +2,7 @@ package krd.antonov.audiclubsheriff.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 public class TempData {
 
@@ -24,7 +26,7 @@ public class TempData {
     private String chatId;
 
     @Column(name = "stage", nullable = false)
-    private String stage;
+    private Integer stage;
 
     @Column(name = "value")
     private String value;
