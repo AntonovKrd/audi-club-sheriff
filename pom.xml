@@ -30,6 +30,7 @@
 		<junit.version>4.13.2</junit.version>
 		<testcontainers.version>1.16.3</testcontainers.version>
 		<telegram.api.version>5.7.1</telegram.api.version>
+		<commons.validator.version>1.7</commons.validator.version>
 	</properties>
 
 	<dependencies>
@@ -44,6 +45,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons.validator.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

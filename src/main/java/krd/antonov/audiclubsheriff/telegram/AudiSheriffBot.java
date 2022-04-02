@@ -1,6 +1,7 @@
 package krd.antonov.audiclubsheriff.telegram;
 
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
+import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
 import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
 import krd.antonov.audiclubsheriff.telegram.handlers.MessageHandler;
 import lombok.Getter;
@@ -31,16 +32,23 @@ public class AudiSheriffBot extends SpringWebhookBot {
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         try {
             return handleUpdate(update);
+        } catch (IllegalArgumentException exception) {
+            return new SendMessage(update.getMessage().getChatId().toString(),
+                    BotMessageEnum.EXCEPTION_ILLEGAL_MESSAGE.getMessage());
+        } catch (TempDataNotFoundException ignored) {
+            return new SendMessage(update.getMessage().getChatId().toString(),
+                    BotMessageEnum.NOT_FOUND_FUNCTIONAL.getMessage());
         } catch (Exception exception) {
-            return new SendMessage(update.getMessage().getChatId().toString(), BotMessageEnum.WTF_EXCEPTION.getMessage());
+            return new SendMessage(update.getMessage().getChatId().toString(),
+                    BotMessageEnum.WTF_EXCEPTION.getMessage());
         }
     }
 
-    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException {
+    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException, TempDataNotFoundException {
         Message message = update.getMessage();
         BotApiMethod<?> answer = null;
         if (message != null) {
-            answer = messageHandler.answerMessage(message);
+            answer = messageHandler.handleMessage(message);
         }
         return answer;
     }
