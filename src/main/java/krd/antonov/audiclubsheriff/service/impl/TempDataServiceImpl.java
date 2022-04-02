@@ -21,7 +21,7 @@ public class TempDataServiceImpl implements TempDataService {
 
     @Override
     @Transactional
-    public TempData create(String chatId, String stage, String value) {
+    public TempData create(String chatId, Integer stage, String value) {
         TempData tempData = new TempData().setChatId(chatId).setStage(stage).setValue(value).setDateEvent(LocalDate.now());
         tempDataRepository.save(tempData);
         return tempData;
@@ -29,7 +29,7 @@ public class TempDataServiceImpl implements TempDataService {
 
     @Override
     public TempData getLastStageTempDataByChatId(String chatId) throws TempDataNotFoundException {
-        return tempDataRepository.findFirstByChatIdOrderByStage(chatId).orElseThrow(() -> new TempDataNotFoundException(chatId));
+        return tempDataRepository.findFirstByChatIdOrderByStageDesc(chatId).orElseThrow(() -> new TempDataNotFoundException(chatId));
     }
 
     @Override
@@ -45,6 +45,7 @@ public class TempDataServiceImpl implements TempDataService {
     }
 
     @Override
+    @Transactional
     public void deleteTempDataByChatId(String chatId) {
         tempDataRepository.deleteAllByChatId(chatId);
     }

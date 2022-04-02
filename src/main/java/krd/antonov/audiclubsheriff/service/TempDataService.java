@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TempDataService {
 
-    TempData create(String chatId, String stage, String value);
+    TempData create(String chatId, Integer stage, String value);
 
     TempData getLastStageTempDataByChatId(String chatId) throws TempDataNotFoundException;
 
