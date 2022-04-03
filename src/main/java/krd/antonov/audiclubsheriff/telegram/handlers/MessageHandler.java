@@ -99,8 +99,12 @@ public class MessageHandler {
                 }
             }
             case 3 -> {
-                tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_MODEL_DB_STAGE, message);
-                sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_YEAR_MESSAGE.getMessage());
+                if (TempDataChecker.isVehicleModelCorrect(message)) {
+                    tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_MODEL_DB_STAGE, message);
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_YEAR_MESSAGE.getMessage());
+                } else {
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_MODEL_MESSAGE.getMessage());
+                }
             }
             case 4 -> {
                 if (TempDataChecker.isYearCorrect(message)) {
