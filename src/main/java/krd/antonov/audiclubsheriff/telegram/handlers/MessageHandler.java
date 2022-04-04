@@ -12,6 +12,7 @@ import krd.antonov.audiclubsheriff.telegram.constants.StagesUserDataConstants;
 import krd.antonov.audiclubsheriff.telegram.keyboards.KeyboardSetter;
 import krd.antonov.audiclubsheriff.telegram.service.ManageUsersService;
 import krd.antonov.audiclubsheriff.telegram.service.TelegramApiService;
+import krd.antonov.audiclubsheriff.util.DataConverter;
 import krd.antonov.audiclubsheriff.util.TempDataChecker;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -91,7 +92,7 @@ public class MessageHandler {
     }
 
     private SendMessage produceContact(Contact contact, String chatId) {
-        tempDataService.create(chatId, StagesUserDataConstants.USER_PHONE_DB_STAGE, TempDataChecker.reformatPhone(contact.getPhoneNumber()));
+        tempDataService.create(chatId, StagesUserDataConstants.USER_PHONE_DB_STAGE, DataConverter.reformatPhone(contact.getPhoneNumber()));
         SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_NAME_MESSAGE.getMessage());
         keyboardSetter.removeKeyboard(sendMessage);
         return sendMessage;
