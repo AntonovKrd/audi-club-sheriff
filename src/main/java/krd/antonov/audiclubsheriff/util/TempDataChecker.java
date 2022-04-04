@@ -18,10 +18,6 @@ public class TempDataChecker {
     private static final String yearPattern = "yyyy";
     private static final DateTimeFormatter yearFormat = DateTimeFormat.forPattern(yearPattern);
 
-    public static String reformatPhone(String phone) {
-        return (phone.startsWith("7")) ? phone.replaceFirst("7", "8") : phone;
-    }
-
     public static boolean isNameCorrect(String name) {
         return namePattern.matcher(name).find();
     }
@@ -30,11 +26,11 @@ public class TempDataChecker {
         return (GenericValidator.isDate(date, dateBirthPattern, true)
                 && DateUtils.parseDate(date, new String[]{dateBirthPattern})
                 .before(LocalDate.now().minusYears(18).toDate())
-        && DateUtils.parseDate(date, new String[]{dateBirthPattern})
+                && DateUtils.parseDate(date, new String[]{dateBirthPattern})
                 .after(LocalDate.now().minusYears(80).toDate()));
     }
 
-    public static boolean isCityCorrect(String city){
+    public static boolean isCityCorrect(String city) {
         return cityPattern.matcher(city).find();
     }
 
@@ -50,8 +46,7 @@ public class TempDataChecker {
         return licensePlatePattern.matcher(licensePlate).find();
     }
 
-    public static boolean isVehicleModelCorrect(String vehicleModel){
+    public static boolean isVehicleModelCorrect(String vehicleModel) {
         return vehicleModelPattern.matcher(vehicleModel).find();
     }
-
 }
