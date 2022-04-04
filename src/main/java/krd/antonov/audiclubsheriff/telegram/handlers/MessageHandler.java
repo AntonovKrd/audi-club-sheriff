@@ -44,7 +44,7 @@ public class MessageHandler {
     public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException {
         BotApiMethod<?> botApiMethod;
         if (message.hasText()) {
-            botApiMethod = produceTextMessage(message.getText(), message.getChatId().toString());
+            botApiMethod = produceTextMessage(message, message.getChatId().toString());
         } else if (message.hasContact()) {
             botApiMethod = produceContact(message.getContact(), message.getChatId().toString());
         } else if (message.hasPhoto()) {
@@ -55,9 +55,9 @@ public class MessageHandler {
         return botApiMethod;
     }
 
-    private SendMessage produceTextMessage(String message, String chatId) throws TelegramSendMessageException, TempDataNotFoundException {
+    private SendMessage produceTextMessage(Message message, String chatId) throws TelegramSendMessageException, TempDataNotFoundException {
         SendMessage sendMessage;
-        switch (message) {
+        switch (message.getText()) {
             case CommandConstants.START -> {
                 tempDataService.deleteTempDataByChatId(chatId);
                 sendMessage = new SendMessage(chatId, BotMessageEnum.START_MESSAGE.getMessage());
@@ -71,6 +71,10 @@ public class MessageHandler {
                 if (!userService.existsByChatId(chatId)) {
                     tempDataService.deleteTempDataByChatId(chatId);
                     telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_HELP_MESSAGE.getMessage()));
+                    if (message.getFrom().getUserName() != null) {
+                        tempDataService.create(chatId, StagesUserDataConstants.USER_USERNAME_DB_STAGE, message.getFrom().getUserName());
+                    }
+                    tempDataService.create(chatId, StagesUserDataConstants.USER_CHAT_ID_DB_STAGE, message.getFrom().getId().toString());
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_CONTACT_MESSAGE.getMessage());
                     keyboardSetter.setRequestContactKeyboard(sendMessage);
                 } else {
@@ -82,16 +86,13 @@ public class MessageHandler {
                 sendMessage = new SendMessage(chatId, BotMessageEnum.NOT_READY_FUNCTIONAL.getMessage());
                 keyboardSetter.setEditDataKeyboard(sendMessage);
             }
-            default -> sendMessage = produceNonCommandTextMessage(chatId, message);
+            default -> sendMessage = produceNonCommandTextMessage(chatId, message.getText());
         }
         return sendMessage;
     }
 
     private SendMessage produceContact(Contact contact, String chatId) {
-        tempDataService.create(
-                chatId,
-                StagesUserDataConstants.USER_PHONE_DB_STAGE,
-                TempDataChecker.reformatPhone(contact.getPhoneNumber()));
+        tempDataService.create(chatId, StagesUserDataConstants.USER_PHONE_DB_STAGE, TempDataChecker.reformatPhone(contact.getPhoneNumber()));
         SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_NAME_MESSAGE.getMessage());
         keyboardSetter.removeKeyboard(sendMessage);
         return sendMessage;

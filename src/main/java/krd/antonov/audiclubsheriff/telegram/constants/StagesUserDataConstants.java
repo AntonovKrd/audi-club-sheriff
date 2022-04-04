@@ -1,6 +1,8 @@
 package krd.antonov.audiclubsheriff.telegram.constants;
 
 public class StagesUserDataConstants {
+    public static final Integer USER_USERNAME_DB_STAGE = -1;
+    public static final Integer USER_CHAT_ID_DB_STAGE = 0;
     public static final Integer USER_PHONE_DB_STAGE = 1;
     public static final Integer USER_NAME_DB_STAGE = 2;
     public static final Integer USER_DATE_BIRTH_DB_STAGE = 3;
