@@ -23,11 +23,11 @@ public class UserServiceImplTest {
         Mockito.when(userService.create("test","Владимир",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
-                "89181144744", "Краснодар")).thenReturn(getMockEntity());
-        AssertionsForClassTypes.assertThat(userService.create("test","Vladimir",
+                "89181144744", "Краснодар", true)).thenReturn(getMockEntity());
+        AssertionsForClassTypes.assertThat(userService.create("test","Владимир",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
-                "89181144744", "Краснодар")).isNotNull();
+                "89181144744", "Краснодар", true)).isNotNull();
     }
 
     @Test
@@ -64,10 +64,12 @@ public class UserServiceImplTest {
     private User getMockEntity() {
         return new User()
                 .setId(1L)
-                .setName("Vladimir")
+                .setChatId("test")
+                .setName("Владимир")
                 .setDateBirth(LocalDate.of(1997, 6, 3))
                 .setTgNickname("@antonov_krd")
                 .setPhone("89181144744")
-                .setCity("Краснодар");
+                .setCity("Краснодар")
+                .setActive(true);
     }
 }

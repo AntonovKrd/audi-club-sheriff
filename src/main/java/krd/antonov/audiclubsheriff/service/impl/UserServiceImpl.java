@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(String chatId, String name, LocalDate dateBirth, String tgNickname, String phone, String city) {
+    public User create(String chatId, String name, LocalDate dateBirth, String tgNickname, String phone, String city, boolean active) {
         User user = new User().setChatId(chatId).setName(name).setDateBirth(dateBirth).setTgNickname(tgNickname)
-                .setPhone(phone).setDateBirth(LocalDate.now()).setCity(city);
+                .setPhone(phone).setDateBirth(LocalDate.now()).setCity(city).setActive(active);
         userRepository.save(user);
         return user;
     }

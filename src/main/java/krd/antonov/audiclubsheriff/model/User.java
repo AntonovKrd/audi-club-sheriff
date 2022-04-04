@@ -45,6 +45,9 @@ public class User {
     @Column(name = "city", nullable = false)
     private String city;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vehicle> vehicles;
@@ -66,11 +69,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getChatId(), user.getChatId()) && Objects.equals(getDateBirth(), user.getDateBirth()) && Objects.equals(getTgNickname(), user.getTgNickname()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getDateRegistration(), user.getDateRegistration()) && Objects.equals(getCity(), user.getCity()) && Objects.equals(getVehicles(), user.getVehicles());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getChatId(), user.getChatId()) && Objects.equals(getDateBirth(), user.getDateBirth()) && Objects.equals(getTgNickname(), user.getTgNickname()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getDateRegistration(), user.getDateRegistration()) && Objects.equals(getCity(), user.getCity()) && Objects.equals(getActive(), user.getActive()) && Objects.equals(getVehicles(), user.getVehicles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getChatId(), getDateBirth(), getTgNickname(), getPhone(), getDateRegistration(), getCity(), getVehicles());
+        return Objects.hash(getId(), getName(), getChatId(), getDateBirth(), getTgNickname(), getPhone(), getDateRegistration(), getCity(), getActive(), getVehicles());
     }
 }
