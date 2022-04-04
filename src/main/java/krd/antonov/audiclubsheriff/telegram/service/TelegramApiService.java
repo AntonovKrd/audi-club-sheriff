@@ -61,14 +61,14 @@ public class TelegramApiService {
         }
     }
 
-    public void sendPhoto(String chatId, String fileId) throws TelegramSendPhotoException {
+    public void sendPhoto(String chatId, String fileId, String caption) throws TelegramSendPhotoException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<SendPhoto> requestEntity = new HttpEntity<>(new SendPhoto(), headers);
         try {
             restTemplate.exchange(
-                    MessageFormat.format("{0}bot{1}/sendPhoto?chat_id={2}&photo={3}",
-                            url, botToken, chatId, fileId),
+                    MessageFormat.format("{0}bot{1}/sendPhoto?chat_id={2}&photo={3}&caption={4}",
+                            url, botToken, chatId, fileId, caption),
                     HttpMethod.POST,
                     requestEntity,
                     String.class);

@@ -103,7 +103,7 @@ public class MessageHandler {
         if (tempDataService.getLastStageTempDataByChatId(chatId).getStage() == 7) {
             telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
             manageUsersService.registerUserWithVehicle(chatId);
-            telegramApiService.sendPhoto("182865434", photoSizeList.stream().max(Comparator.comparing(PhotoSize::getFileSize)).get().getFileId());
+            telegramApiService.sendPhoto("182865434", photoSizeList.stream().max(Comparator.comparing(PhotoSize::getFileSize)).get().getFileId(), "");
             sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
         } else {
             sendMessage = new SendMessage(chatId, BotMessageEnum.EXCEPTION_NOT_NOW_PHOTO.getMessage());
