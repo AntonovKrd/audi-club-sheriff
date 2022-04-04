@@ -14,6 +14,8 @@ public interface UserService {
 
     User getByTgNickname(String tgNickname) throws UserNotFoundException;
 
+    boolean existsByChatId(String chatId);
+
     User update(User user);
 
     void deleteUser(User user);

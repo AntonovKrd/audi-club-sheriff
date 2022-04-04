@@ -4,6 +4,7 @@ import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
 import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
 import krd.antonov.audiclubsheriff.model.TempData;
 import krd.antonov.audiclubsheriff.service.TempDataService;
+import krd.antonov.audiclubsheriff.service.UserService;
 import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
 import krd.antonov.audiclubsheriff.telegram.constants.CommandConstants;
 import krd.antonov.audiclubsheriff.telegram.constants.StagesUserDataConstants;
@@ -26,12 +27,14 @@ public class MessageHandler {
     private final TelegramApiService telegramApiService;
     private final TempDataService tempDataService;
     private final ManageUsersService manageUsersService;
+    private final UserService userService;
 
-    public MessageHandler(KeyboardSetter keyboardSetter, TelegramApiService telegramApiService, TempDataService tempDataService, ManageUsersService manageUsersService) {
+    public MessageHandler(KeyboardSetter keyboardSetter, TelegramApiService telegramApiService, TempDataService tempDataService, ManageUsersService manageUsersService, UserService userService) {
         this.keyboardSetter = keyboardSetter;
         this.telegramApiService = telegramApiService;
         this.tempDataService = tempDataService;
         this.manageUsersService = manageUsersService;
+        this.userService = userService;
     }
 
     public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException {
@@ -52,13 +55,22 @@ public class MessageHandler {
             case CommandConstants.START -> {
                 tempDataService.deleteTempDataByChatId(chatId);
                 sendMessage = new SendMessage(chatId, BotMessageEnum.START_MESSAGE.getMessage());
-                keyboardSetter.setRegistrationKeyboard(sendMessage);
+                if (!userService.existsByChatId(chatId)) {
+                    keyboardSetter.setRegistrationKeyboard(sendMessage);
+                } else {
+                    keyboardSetter.setEditDataKeyboard(sendMessage);
+                }
             }
             case CommandConstants.REGISTRATION -> {
-                telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_HELP_MESSAGE.getMessage()));
-                tempDataService.deleteTempDataByChatId(chatId);
-                sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_CONTACT_MESSAGE.getMessage());
-                keyboardSetter.setRequestContactKeyboard(sendMessage);
+                if (!userService.existsByChatId(chatId)) {
+                    tempDataService.deleteTempDataByChatId(chatId);
+                    telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_HELP_MESSAGE.getMessage()));
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_CONTACT_MESSAGE.getMessage());
+                    keyboardSetter.setRequestContactKeyboard(sendMessage);
+                } else {
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_REJECTED_MESSAGE.getMessage());
+                    keyboardSetter.setEditDataKeyboard(sendMessage);
+                }
             }
             case CommandConstants.EDIT_DATA -> {
                 sendMessage = new SendMessage(chatId, BotMessageEnum.NOT_READY_FUNCTIONAL.getMessage());
@@ -75,7 +87,7 @@ public class MessageHandler {
                 StagesUserDataConstants.USER_PHONE_DB_STAGE,
                 TempDataChecker.reformatPhone(contact.getPhoneNumber()));
         SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_NAME_MESSAGE.getMessage());
-        sendMessage.setReplyMarkup(null);
+        keyboardSetter.removeKeyboard(sendMessage);
         return sendMessage;
     }
 

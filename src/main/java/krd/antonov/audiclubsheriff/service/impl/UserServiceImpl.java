@@ -39,6 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean existsByChatId(String chatId) {
+        return userRepository.existsByChatId(chatId);
+    }
+
+    @Override
     @Transactional
     public User update(User user) {
         userRepository.save(user);
