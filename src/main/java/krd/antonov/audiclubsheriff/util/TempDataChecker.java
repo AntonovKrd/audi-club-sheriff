@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class TempDataChecker {
 
-    private static final Pattern namePattern = Pattern.compile("^[\\p{L} .'-]{2,255}$");
+    private static final Pattern namePattern = Pattern.compile("^[А-Яа-я .'-]{2,255}$");
     private static final Pattern licensePlatePattern = Pattern.compile("^[АВЕКМНОРСТУХавекмнорстухA-Za-z0-9]{8,9}$");
     private static final Pattern vehicleModelPattern = Pattern.compile("^[A-Za-z0-9 ]{2,25}$");
     private static final String dateBirthPattern = "dd.MM.yyyy";
