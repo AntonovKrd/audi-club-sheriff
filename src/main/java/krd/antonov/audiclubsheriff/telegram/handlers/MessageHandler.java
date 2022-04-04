@@ -17,6 +17,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Locale;
+
 @Component
 public class MessageHandler {
 
@@ -116,7 +118,7 @@ public class MessageHandler {
             }
             case 5 -> {
                 if (TempDataChecker.isLicensePlateCorrect(message)){
-                    tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message);
+                    tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message.toUpperCase(Locale.ROOT));
                     telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
                     manageUsersService.registerUser(chatId);
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
