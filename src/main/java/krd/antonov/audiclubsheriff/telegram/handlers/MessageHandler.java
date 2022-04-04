@@ -52,7 +52,7 @@ public class MessageHandler {
             case CommandConstants.START -> {
                 tempDataService.deleteTempDataByChatId(chatId);
                 sendMessage = new SendMessage(chatId, BotMessageEnum.START_MESSAGE.getMessage());
-                keyboardSetter.setMainMenuKeyboard(sendMessage);
+                keyboardSetter.setRegistrationKeyboard(sendMessage);
             }
             case CommandConstants.REGISTRATION -> {
                 telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_HELP_MESSAGE.getMessage()));
@@ -62,7 +62,7 @@ public class MessageHandler {
             }
             case CommandConstants.EDIT_DATA -> {
                 sendMessage = new SendMessage(chatId, BotMessageEnum.NOT_READY_FUNCTIONAL.getMessage());
-                keyboardSetter.setMainMenuKeyboard(sendMessage);
+                keyboardSetter.setEditDataKeyboard(sendMessage);
             }
             default -> sendMessage = produceNonCommandTextMessage(chatId, message);
         }
@@ -130,7 +130,6 @@ public class MessageHandler {
                     telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
                     manageUsersService.registerUser(chatId);
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
-                    keyboardSetter.setMainMenuKeyboard(sendMessage);
                 } else {
                     sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_LICENSE_PLATE_MESSAGE.getMessage());
                 }

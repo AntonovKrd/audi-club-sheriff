@@ -12,9 +12,15 @@ import java.util.List;
 @Component
 public class KeyboardSetter {
 
-    public void setMainMenuKeyboard(SendMessage sendMessage) {
+    public void setRegistrationKeyboard(SendMessage sendMessage) {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton(ButtonNameEnum.REGISTRATION_BUTTON.getButton()));
+        sendMessage.enableMarkdown(true);
+        sendMessage.setReplyMarkup(buildKeyboard(List.of(row1)));
+    }
+
+    public void setEditDataKeyboard(SendMessage sendMessage){
+        KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton(ButtonNameEnum.EDIT_DATA_BUTTON.getButton()));
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyMarkup(buildKeyboard(List.of(row1)));
