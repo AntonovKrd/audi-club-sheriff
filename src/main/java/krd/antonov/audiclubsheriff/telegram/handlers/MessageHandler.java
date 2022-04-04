@@ -74,7 +74,6 @@ public class MessageHandler {
                     if (message.getFrom().getUserName() != null) {
                         tempDataService.create(chatId, StagesUserDataConstants.USER_USERNAME_DB_STAGE, message.getFrom().getUserName());
                     }
-                    tempDataService.create(chatId, StagesUserDataConstants.USER_CHAT_ID_DB_STAGE, message.getFrom().getId().toString());
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_CONTACT_MESSAGE.getMessage());
                     keyboardSetter.setRequestContactKeyboard(sendMessage);
                 } else {
