@@ -40,11 +40,11 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Objects.equals(getId(), vehicle.getId()) && Objects.equals(getLicensePlate(), vehicle.getLicensePlate()) && Objects.equals(getModel(), vehicle.getModel()) && Objects.equals(getYear(), vehicle.getYear()) && Objects.equals(getUser(), vehicle.getUser());
+        return Objects.equals(getId(), vehicle.getId()) && Objects.equals(getLicensePlate(), vehicle.getLicensePlate()) && Objects.equals(getModel(), vehicle.getModel()) && Objects.equals(getYear(), vehicle.getYear());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLicensePlate(), getModel(), getYear(), getUser());
+        return Objects.hash(getId(), getLicensePlate(), getModel(), getYear());
     }
 }
