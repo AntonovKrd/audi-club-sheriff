@@ -1,6 +1,7 @@
 package krd.antonov.audiclubsheriff.telegram.handlers;
 
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
+import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
 import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
 import krd.antonov.audiclubsheriff.model.TempData;
 import krd.antonov.audiclubsheriff.service.TempDataService;
@@ -17,7 +18,10 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -37,12 +41,14 @@ public class MessageHandler {
         this.userService = userService;
     }
 
-    public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException {
+    public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException {
         BotApiMethod<?> botApiMethod;
         if (message.hasText()) {
             botApiMethod = produceTextMessage(message.getText(), message.getChatId().toString());
         } else if (message.hasContact()) {
             botApiMethod = produceContact(message.getContact(), message.getChatId().toString());
+        } else if (message.hasPhoto()) {
+            botApiMethod = producePhoto(message.getPhoto(), message.getChatId().toString());
         } else {
             throw new IllegalArgumentException();
         }
@@ -91,9 +97,21 @@ public class MessageHandler {
         return sendMessage;
     }
 
-    private SendMessage produceNonCommandTextMessage(String chatId, String message) throws TempDataNotFoundException, TelegramSendMessageException {
+    private SendMessage producePhoto(List<PhotoSize> photoSizeList, String chatId) throws TempDataNotFoundException, TelegramSendMessageException, TelegramSendPhotoException {
+        SendMessage sendMessage;
+        if (tempDataService.getLastStageTempDataByChatId(chatId).getStage() == 7) {
+            telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
+            manageUsersService.registerUserWithVehicle(chatId);
+            telegramApiService.sendPhoto("182865434", photoSizeList.stream().max(Comparator.comparing(PhotoSize::getFileSize)).get().getFileId());
+            sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
+        } else {
+            sendMessage = new SendMessage(chatId, BotMessageEnum.EXCEPTION_NOT_NOW_PHOTO.getMessage());
+        }
+        return sendMessage;
+    }
+
+    private SendMessage produceNonCommandTextMessage(String chatId, String message) throws TempDataNotFoundException {
         TempData lastTempData = tempDataService.getLastStageTempDataByChatId(chatId);
-        System.out.println(lastTempData.toString());
         SendMessage sendMessage = null;
         switch (lastTempData.getStage()) {
             case 1 -> {
@@ -139,9 +157,7 @@ public class MessageHandler {
             case 6 -> {
                 if (TempDataChecker.isLicensePlateCorrect(message)) {
                     tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message.toUpperCase(Locale.ROOT));
-                    telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
-                    manageUsersService.registerUser(chatId);
-                    sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_PHOTO.getMessage());
                 } else {
                     sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_LICENSE_PLATE_MESSAGE.getMessage());
                 }
