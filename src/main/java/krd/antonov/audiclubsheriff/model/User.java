@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -40,20 +41,20 @@ public class User {
     private String phone;
 
     @Column(name = "date_registration", nullable = false)
-    private LocalDate dateRegistration;
+    private LocalDateTime dateRegistration;
 
     @Column(name = "city", nullable = false)
     private String city;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active = false;
 
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vehicle> vehicles;
 
     public User addVehicle(Vehicle vehicle) {
-        if (vehicle == null) vehicles = new HashSet<>();
+        if (vehicles == null) vehicles = new HashSet<>();
         vehicles.add(vehicle.setUser(this));
         return this;
     }
@@ -69,11 +70,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getName(), user.getName()) && Objects.equals(getChatId(), user.getChatId()) && Objects.equals(getDateBirth(), user.getDateBirth()) && Objects.equals(getTgNickname(), user.getTgNickname()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getDateRegistration(), user.getDateRegistration()) && Objects.equals(getCity(), user.getCity()) && Objects.equals(getActive(), user.getActive()) && Objects.equals(getVehicles(), user.getVehicles());
+        return getId().equals(user.getId()) && getChatId().equals(user.getChatId()) && getPhone().equals(user.getPhone());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getChatId(), getDateBirth(), getTgNickname(), getPhone(), getDateRegistration(), getCity(), getActive(), getVehicles());
+        return Objects.hash(getId(), getChatId(), getPhone());
     }
 }
