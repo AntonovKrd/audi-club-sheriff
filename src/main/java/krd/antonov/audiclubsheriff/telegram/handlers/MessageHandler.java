@@ -95,12 +95,20 @@ public class MessageHandler {
             case 2 -> {
                 if (TempDataChecker.isDateBirthCorrect(message)) {
                     tempDataService.create(chatId, StagesUserDataConstants.USER_DATE_BIRTH_DB_STAGE, message);
-                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_MODEL_MESSAGE.getMessage());
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_USER_CITY_MESSAGE.getMessage());
                 } else {
                     sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_USER_DATE_BIRTH_MESSAGE.getMessage());
                 }
             }
             case 3 -> {
+                if (TempDataChecker.isCityCorrect(message)) {
+                    tempDataService.create(chatId, StagesUserDataConstants.USER_CITY_DB_STAGE, message);
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_MODEL_MESSAGE.getMessage());
+                } else {
+                    sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_USER_CITY_MESSAGE.getMessage());
+                }
+            }
+            case 4 -> {
                 if (TempDataChecker.isVehicleModelCorrect(message)) {
                     tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_MODEL_DB_STAGE, message);
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_YEAR_MESSAGE.getMessage());
@@ -108,7 +116,7 @@ public class MessageHandler {
                     sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_MODEL_MESSAGE.getMessage());
                 }
             }
-            case 4 -> {
+            case 5 -> {
                 if (TempDataChecker.isYearCorrect(message)) {
                     tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_YEAR_DB_STAGE, message);
                     sendMessage = new SendMessage(chatId, BotMessageEnum.REQUEST_VEHICLE_LICENSE_PLATE_MESSAGE.getMessage());
@@ -116,8 +124,8 @@ public class MessageHandler {
                     sendMessage = new SendMessage(chatId, BotMessageEnum.INVALID_VEHICLE_YEAR_MESSAGE.getMessage());
                 }
             }
-            case 5 -> {
-                if (TempDataChecker.isLicensePlateCorrect(message)){
+            case 6 -> {
+                if (TempDataChecker.isLicensePlateCorrect(message)) {
                     tempDataService.create(chatId, StagesUserDataConstants.VEHICLE_LICENCE_PLATE_DB_STAGE, message.toUpperCase(Locale.ROOT));
                     telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
                     manageUsersService.registerUser(chatId);

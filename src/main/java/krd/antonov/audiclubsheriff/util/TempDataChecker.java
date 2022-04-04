@@ -11,9 +11,10 @@ import java.util.regex.Pattern;
 public class TempDataChecker {
 
     private static final Pattern namePattern = Pattern.compile("^[А-Яа-я .'-]{2,255}$");
+    private static final String dateBirthPattern = "dd.MM.yyyy";
+    private static final Pattern cityPattern = Pattern.compile("^[А-Яа-я]+(?:[\\s-][А-Яа-я]+)*$");
     private static final Pattern licensePlatePattern = Pattern.compile("^[АВЕКМНОРСТУХавекмнорстухA-Za-z0-9]{8,9}$");
     private static final Pattern vehicleModelPattern = Pattern.compile("^[A-Za-z0-9 ]{2,25}$");
-    private static final String dateBirthPattern = "dd.MM.yyyy";
     private static final String yearPattern = "yyyy";
     private static final DateTimeFormatter yearFormat = DateTimeFormat.forPattern(yearPattern);
 
@@ -33,6 +34,10 @@ public class TempDataChecker {
                 .after(LocalDate.now().minusYears(80).toDate()));
     }
 
+    public static boolean isCityCorrect(String city){
+        return cityPattern.matcher(city).find();
+    }
+
     public static boolean isYearCorrect(String year) {
         return (GenericValidator.isDate(year, yearPattern, true)
                 && DateUtils.parseDate(year, new String[]{yearPattern})
@@ -48,4 +53,5 @@ public class TempDataChecker {
     public static boolean isVehicleModelCorrect(String vehicleModel){
         return vehicleModelPattern.matcher(vehicleModel).find();
     }
+
 }

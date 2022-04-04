@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User create(String chatId, String name, LocalDate dateBirth, String tgNickname, String phone);
+    User create(String chatId, String name, LocalDate dateBirth, String tgNickname, String phone, String city);
 
     User get(Long id) throws UserNotFoundException;
 
