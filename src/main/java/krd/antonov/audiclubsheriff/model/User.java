@@ -46,6 +46,9 @@ public class User {
     @Column(name = "city", nullable = false)
     private String city;
 
+    @Column(name = "comment")
+    private String comment;
+
     @Column(name = "active", nullable = false)
     private Boolean active = false;
 
