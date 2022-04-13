@@ -44,5 +44,6 @@ public class ManageUsersService {
         }
         user.addVehicle(vehicle);
         userService.update(user);
+        dataService.deleteTempDataByChatId(chatId);
     }
 }
