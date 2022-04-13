@@ -37,9 +37,10 @@ public class ManageUsersService {
                 }
                 case 3 -> user.setDateBirth(DataConverter.convertStringToLocalDate(data.getValue()));
                 case 4 -> user.setCity(data.getValue());
-                case 5 -> vehicle.setModel(data.getValue());
-                case 6 -> vehicle.setYear(Integer.valueOf(data.getValue()));
-                case 7 -> vehicle.setLicensePlate(data.getValue());
+                case 5 -> user.setComment(data.getValue());
+                case 6 -> vehicle.setModel(data.getValue());
+                case 7 -> vehicle.setYear(Integer.valueOf(data.getValue()));
+                case 8 -> vehicle.setLicensePlate(data.getValue());
             }
         }
         user.addVehicle(vehicle);
