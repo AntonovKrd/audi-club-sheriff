@@ -3,6 +3,7 @@ package krd.antonov.audiclubsheriff.telegram.handlers;
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
 import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
+import krd.antonov.audiclubsheriff.exceptions.UserNotFoundException;
 import krd.antonov.audiclubsheriff.model.TempData;
 import krd.antonov.audiclubsheriff.service.TempDataService;
 import krd.antonov.audiclubsheriff.service.UserService;
@@ -42,7 +43,7 @@ public class MessageHandler {
         this.userService = userService;
     }
 
-    public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException {
+    public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException {
         BotApiMethod<?> botApiMethod;
         if (message.hasText()) {
             botApiMethod = produceTextMessage(message, message.getChatId().toString());
@@ -98,12 +99,13 @@ public class MessageHandler {
         return sendMessage;
     }
 
-    private SendMessage producePhoto(List<PhotoSize> photoSizeList, String chatId) throws TempDataNotFoundException, TelegramSendMessageException, TelegramSendPhotoException {
+    private SendMessage producePhoto(List<PhotoSize> photoSizeList, String chatId) throws TempDataNotFoundException, TelegramSendMessageException, TelegramSendPhotoException, UserNotFoundException {
         SendMessage sendMessage;
         if (tempDataService.getLastStageTempDataByChatId(chatId).getStage() == 8) {
             telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.REGISTRATION_SAVE_STAGE_MESSAGE.getMessage()));
             manageUsersService.registerUserWithVehicle(chatId);
-            telegramApiService.sendPhoto("182865434", photoSizeList.stream().max(Comparator.comparing(PhotoSize::getFileSize)).get().getFileId(), "");
+            manageUsersService.sendRequestActivationUser(chatId,
+                    photoSizeList.stream().max(Comparator.comparing(PhotoSize::getFileSize)).get().getFileId());
             sendMessage = new SendMessage(chatId, BotMessageEnum.REGISTRATION_SUCCESS_MESSAGE.getMessage());
         } else {
             sendMessage = new SendMessage(chatId, BotMessageEnum.EXCEPTION_NOT_NOW_PHOTO.getMessage());

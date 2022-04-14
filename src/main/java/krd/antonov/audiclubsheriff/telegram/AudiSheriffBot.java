@@ -3,6 +3,7 @@ package krd.antonov.audiclubsheriff.telegram;
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
 import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
 import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
+import krd.antonov.audiclubsheriff.exceptions.UserNotFoundException;
 import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
 import krd.antonov.audiclubsheriff.telegram.handlers.MessageHandler;
 import lombok.Getter;
@@ -45,7 +46,7 @@ public class AudiSheriffBot extends SpringWebhookBot {
         }
     }
 
-    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException {
+    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException {
         Message message = update.getMessage();
         BotApiMethod<?> answer = null;
         if (message != null) {
