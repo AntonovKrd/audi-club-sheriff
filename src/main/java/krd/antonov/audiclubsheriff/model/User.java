@@ -80,4 +80,9 @@ public class User {
     public int hashCode() {
         return Objects.hash(getId(), getChatId(), getPhone());
     }
+
+    @Override
+    public String toString() {
+        return "Имя - " + name + "\nДата Рождения - " + dateBirth + "\ntg - " + tgNickname + "\nТелефон - " + phone + "\nГород - " + city + "\nРод деятельности - " + comment;
+    }
 }

@@ -47,4 +47,9 @@ public class Vehicle {
     public int hashCode() {
         return Objects.hash(getId(), getLicensePlate(), getModel(), getYear());
     }
+
+    @Override
+    public String toString() {
+        return "Авто - " + model +  "\nГос. номер - " + licensePlate + "\nГод - " + year;
+    }
 }
