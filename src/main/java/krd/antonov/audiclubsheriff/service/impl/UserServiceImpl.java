@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByChatId(String chatId) throws UserNotFoundException {
+        return userRepository.findByChatId(chatId).orElseThrow(() -> new UserNotFoundException("chatId - " + chatId));
+    }
+
+    @Override
     public boolean existsByChatId(String chatId) {
         return userRepository.existsByChatId(chatId);
     }

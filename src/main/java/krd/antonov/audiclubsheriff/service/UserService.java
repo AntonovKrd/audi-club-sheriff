@@ -15,6 +15,8 @@ public interface UserService {
 
     User getByTgNickname(String tgNickname) throws UserNotFoundException;
 
+    User getByChatId(String chatId) throws UserNotFoundException;
+
     boolean existsByChatId(String chatId);
 
     User update(User user);
