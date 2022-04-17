@@ -1,16 +1,15 @@
 package krd.antonov.audiclubsheriff.telegram;
 
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
-import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
-import krd.antonov.audiclubsheriff.exceptions.UserNotFoundException;
+import krd.antonov.audiclubsheriff.exceptions.*;
 import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
+import krd.antonov.audiclubsheriff.telegram.handlers.CallbackQueryHandler;
 import krd.antonov.audiclubsheriff.telegram.handlers.MessageHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
@@ -24,10 +23,11 @@ public class AudiSheriffBot extends SpringWebhookBot {
     private String botUsername;
 
     private MessageHandler messageHandler;
-
-    public AudiSheriffBot(SetWebhook setWebhook, MessageHandler messageHandler) {
+    private CallbackQueryHandler callbackQueryHandler;
+    public AudiSheriffBot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
         super(setWebhook);
         this.messageHandler = messageHandler;
+        this.callbackQueryHandler = callbackQueryHandler;
     }
 
     @Override
@@ -46,11 +46,16 @@ public class AudiSheriffBot extends SpringWebhookBot {
         }
     }
 
-    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException {
-        Message message = update.getMessage();
+    private BotApiMethod<?> handleUpdate(Update update) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException, TelegramCreateChatLinkException {
         BotApiMethod<?> answer = null;
-        if (message != null) {
-            answer = messageHandler.handleMessage(message);
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            answer = callbackQueryHandler.processCallbackQuery(callbackQuery);
+        } else {
+            Message message = update.getMessage();
+            if (message != null) {
+                answer = messageHandler.handleMessage(message);
+            }
         }
         return answer;
     }

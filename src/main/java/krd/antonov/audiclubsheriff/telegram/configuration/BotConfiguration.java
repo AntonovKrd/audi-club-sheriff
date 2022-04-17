@@ -1,6 +1,7 @@
 package krd.antonov.audiclubsheriff.telegram.configuration;
 
 import krd.antonov.audiclubsheriff.telegram.AudiSheriffBot;
+import krd.antonov.audiclubsheriff.telegram.handlers.CallbackQueryHandler;
 import krd.antonov.audiclubsheriff.telegram.handlers.MessageHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +20,8 @@ public class BotConfiguration {
     }
 
     @Bean
-    public AudiSheriffBot audiSheriffBot(SetWebhook setWebhook, MessageHandler messageHandler) {
-        AudiSheriffBot bot = new AudiSheriffBot(setWebhook, messageHandler);
+    public AudiSheriffBot audiSheriffBot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
+        AudiSheriffBot bot = new AudiSheriffBot(setWebhook, messageHandler, callbackQueryHandler);
         bot.setBotPath(configuration.getWebhookPath());
         bot.setBotUsername(configuration.getBotName());
         bot.setBotToken(configuration.getBotToken());
