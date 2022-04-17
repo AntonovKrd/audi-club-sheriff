@@ -1,9 +1,6 @@
 package krd.antonov.audiclubsheriff.telegram.handlers;
 
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
-import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
-import krd.antonov.audiclubsheriff.exceptions.UserNotFoundException;
+import krd.antonov.audiclubsheriff.exceptions.*;
 import krd.antonov.audiclubsheriff.model.TempData;
 import krd.antonov.audiclubsheriff.service.TempDataService;
 import krd.antonov.audiclubsheriff.service.UserService;
@@ -45,14 +42,18 @@ public class MessageHandler {
 
     public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException {
         BotApiMethod<?> botApiMethod;
-        if (message.hasText()) {
-            botApiMethod = produceTextMessage(message, message.getChatId().toString());
-        } else if (message.hasContact()) {
-            botApiMethod = produceContact(message.getContact(), message.getChatId().toString());
-        } else if (message.hasPhoto()) {
-            botApiMethod = producePhoto(message.getPhoto(), message.getChatId().toString());
+        if (message.getChat().getType().equals("private")) {
+            if (message.hasText()) {
+                botApiMethod = produceTextMessage(message, message.getChatId().toString());
+            } else if (message.hasContact()) {
+                botApiMethod = produceContact(message.getContact(), message.getChatId().toString());
+            } else if (message.hasPhoto()) {
+                botApiMethod = producePhoto(message.getPhoto(), message.getChatId().toString());
+            } else {
+                throw new IllegalArgumentException();
+            }
         } else {
-            throw new IllegalArgumentException();
+            return null;
         }
         return botApiMethod;
     }
