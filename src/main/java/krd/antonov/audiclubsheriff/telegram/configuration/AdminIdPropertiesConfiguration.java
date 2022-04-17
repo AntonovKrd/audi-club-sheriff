@@ -18,4 +18,7 @@ public class AdminIdPropertiesConfiguration {
 
     @NotBlank
     private String admin;
+
+    @NotBlank
+    private String audilink;
 }
