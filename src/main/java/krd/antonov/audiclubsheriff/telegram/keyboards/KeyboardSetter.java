@@ -42,8 +42,8 @@ public class KeyboardSetter {
 
     public void setAcceptInlineKeyboard(SendMessage sendMessage, String callbackData) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(getButtonWithCallbackData(ButtonNameEnum.ACCEPT_USER_BUTTON.getButton(), CommandConstants.ACCEPT + callbackData));
-        rowList.add(getButtonWithCallbackData(ButtonNameEnum.DECLINE_USER_BUTTON.getButton(), CommandConstants.DECLINE + callbackData));
+        rowList.add(getButtonWithCallbackData(ButtonNameEnum.ACCEPT_USER_BUTTON.getButton(), CommandConstants.ACCEPT_USER + callbackData));
+        rowList.add(getButtonWithCallbackData(ButtonNameEnum.DECLINE_USER_BUTTON.getButton(), CommandConstants.DECLINE_USER + callbackData));
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);

@@ -1,15 +1,13 @@
 package krd.antonov.audiclubsheriff.telegram.service;
 
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendMessageException;
-import krd.antonov.audiclubsheriff.exceptions.TelegramSendPhotoException;
-import krd.antonov.audiclubsheriff.exceptions.TempDataNotFoundException;
-import krd.antonov.audiclubsheriff.exceptions.UserNotFoundException;
+import krd.antonov.audiclubsheriff.exceptions.*;
 import krd.antonov.audiclubsheriff.model.TempData;
 import krd.antonov.audiclubsheriff.model.User;
 import krd.antonov.audiclubsheriff.model.Vehicle;
 import krd.antonov.audiclubsheriff.service.TempDataService;
 import krd.antonov.audiclubsheriff.service.UserService;
 import krd.antonov.audiclubsheriff.telegram.configuration.AdminIdPropertiesConfiguration;
+import krd.antonov.audiclubsheriff.telegram.constants.BotMessageEnum;
 import krd.antonov.audiclubsheriff.telegram.keyboards.KeyboardSetter;
 import krd.antonov.audiclubsheriff.util.DataConverter;
 import org.springframework.stereotype.Service;
@@ -72,5 +70,24 @@ public class ManageUsersService {
         //telegramApiService.sendPhoto(adminsChatId.getAdmin(), fileId, "");
         //sendMessage.setChatId(adminsChatId.getAdmin());
         //telegramApiService.sendMessage(sendMessage);
+    }
+
+    public void activateUser(String chatId) throws UserNotFoundException, TelegramSendMessageException, TelegramCreateChatLinkException {
+        User user = userService.getByChatId(chatId);
+        user.setActive(true);
+        userService.update(user);
+        String inviteLink = telegramApiService.createChatInviteLink(adminsChatId.getAudilink());
+        telegramApiService.sendMessage(new SendMessage(chatId, BotMessageEnum.ACCEPT_USER_INFO_MESSAGE.getMessage()));
+        SendMessage sendMessage = new SendMessage(chatId, BotMessageEnum.ACCEPT_USER_MESSAGE.getMessage());
+        keyboardSetter.setInviteInlineKeyboard(sendMessage, inviteLink);
+        telegramApiService.sendMessage(sendMessage);
+    }
+
+    public void declineUser(String chatId) throws UserNotFoundException, TelegramSendMessageException {
+        User user = userService.getByChatId(chatId);
+        SendMessage sendMessage = new SendMessage(chatId, String.format(BotMessageEnum.DECLINE_USER_MESSAGE.getMessage(), user.getName()));
+        keyboardSetter.setRegistrationKeyboard(sendMessage);
+        userService.deleteUser(user);
+        telegramApiService.sendMessage(sendMessage);
     }
 }

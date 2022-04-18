@@ -25,11 +25,11 @@ public class CallbackQueryHandler {
         String data = buttonQuery.getData().replace(command, "");
         AnswerCallbackQuery answer = null;
         switch (command) {
-            case CommandConstants.ACCEPT -> {
+            case CommandConstants.ACCEPT_USER -> {
                 manageUsersService.activateUser(data);
                 answer = getCallbackAnswer(buttonQuery.getId(), BotMessageEnum.ACCEPT_ADMIN_MESSAGE.getMessage());
             }
-            case CommandConstants.DECLINE -> {
+            case CommandConstants.DECLINE_USER -> {
                 manageUsersService.declineUser(data);
                 answer = getCallbackAnswer(buttonQuery.getId(), BotMessageEnum.DECLINE_ADMIN_MESSAGE.getMessage());
             }
