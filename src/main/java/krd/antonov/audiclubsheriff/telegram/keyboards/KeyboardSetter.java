@@ -1,6 +1,7 @@
 package krd.antonov.audiclubsheriff.telegram.keyboards;
 
 import krd.antonov.audiclubsheriff.telegram.constants.ButtonNameEnum;
+import krd.antonov.audiclubsheriff.telegram.constants.CommandConstants;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -39,10 +40,18 @@ public class KeyboardSetter {
         sendMessage.setReplyMarkup(buildKeyboard(List.of(row1)));
     }
 
-    public void setAcceptInlineKeyboard(SendMessage sendMessage, String callBackData) {
+    public void setAcceptInlineKeyboard(SendMessage sendMessage, String callbackData) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(getButton(ButtonNameEnum.ACCEPT_USER_BUTTON.getButton(), callBackData));
-        rowList.add(getButton(ButtonNameEnum.DECLINE_USER_BUTTON.getButton(), callBackData));
+        rowList.add(getButtonWithCallbackData(ButtonNameEnum.ACCEPT_USER_BUTTON.getButton(), CommandConstants.ACCEPT + callbackData));
+        rowList.add(getButtonWithCallbackData(ButtonNameEnum.DECLINE_USER_BUTTON.getButton(), CommandConstants.DECLINE + callbackData));
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        sendMessage.setReplyMarkup(inlineKeyboardMarkup);
+    }
+
+    public void setInviteInlineKeyboard(SendMessage sendMessage, String inviteLink) {
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(getButtonWithUrl(ButtonNameEnum.JOIN_GROUP_BUTTON.getButton(), inviteLink));
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
@@ -61,11 +70,19 @@ public class KeyboardSetter {
         return replyKeyboardMarkup;
     }
 
-    private List<InlineKeyboardButton> getButton(String buttonName, String buttonCallBackData) {
+    private List<InlineKeyboardButton> getButtonWithCallbackData(String buttonName, String callbackData) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(buttonName);
-        button.setCallbackData(buttonCallBackData);
+        button.setCallbackData(callbackData);
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+        keyboardButtonsRow.add(button);
+        return keyboardButtonsRow;
+    }
 
+    private List<InlineKeyboardButton> getButtonWithUrl(String buttonName, String inviteLink) {
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText(buttonName);
+        button.setUrl(inviteLink);
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
         keyboardButtonsRow.add(button);
         return keyboardButtonsRow;

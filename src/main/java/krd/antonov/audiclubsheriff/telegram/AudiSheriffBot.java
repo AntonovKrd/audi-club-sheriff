@@ -24,6 +24,7 @@ public class AudiSheriffBot extends SpringWebhookBot {
 
     private MessageHandler messageHandler;
     private CallbackQueryHandler callbackQueryHandler;
+
     public AudiSheriffBot(SetWebhook setWebhook, MessageHandler messageHandler, CallbackQueryHandler callbackQueryHandler) {
         super(setWebhook);
         this.messageHandler = messageHandler;
@@ -35,14 +36,11 @@ public class AudiSheriffBot extends SpringWebhookBot {
         try {
             return handleUpdate(update);
         } catch (IllegalArgumentException exception) {
-            return new SendMessage(update.getMessage().getChatId().toString(),
-                    BotMessageEnum.EXCEPTION_ILLEGAL_MESSAGE.getMessage());
+            return new SendMessage(update.getMessage().getChatId().toString(), BotMessageEnum.EXCEPTION_ILLEGAL_MESSAGE.getMessage());
         } catch (TempDataNotFoundException exception) {
-            return new SendMessage(update.getMessage().getChatId().toString(),
-                    BotMessageEnum.NOT_FOUND_FUNCTIONAL.getMessage());
+            return new SendMessage(update.getMessage().getChatId().toString(), BotMessageEnum.NOT_FOUND_FUNCTIONAL.getMessage());
         } catch (Exception exception) {
-            return new SendMessage(update.getMessage().getChatId().toString(),
-                    BotMessageEnum.WTF_EXCEPTION.getMessage());
+            return new SendMessage(update.getMessage().getChatId().toString(), BotMessageEnum.WTF_EXCEPTION.getMessage());
         }
     }
 
