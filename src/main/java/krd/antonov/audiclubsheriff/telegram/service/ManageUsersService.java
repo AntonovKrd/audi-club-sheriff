@@ -90,4 +90,12 @@ public class ManageUsersService {
         userService.deleteUser(user);
         telegramApiService.sendMessage(sendMessage);
     }
+
+    public void saluteNewGroupUser(String chatId) {
+        try {
+            User user = userService.getByChatId(chatId);
+            SendMessage sendMessage = new SendMessage(adminsChatId.getAudilink(), user.getName() + BotMessageEnum.WELCOME_GROUP_MESSAGE.getMessage());
+            telegramApiService.sendMessage(sendMessage);
+        } catch (Exception ignored) {}
+    }
 }

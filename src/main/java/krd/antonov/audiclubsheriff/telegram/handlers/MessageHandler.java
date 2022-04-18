@@ -44,7 +44,7 @@ public class MessageHandler {
     }
 
     public BotApiMethod<?> handleMessage(Message message) throws TelegramSendMessageException, TempDataNotFoundException, TelegramSendPhotoException, UserNotFoundException {
-        BotApiMethod<?> botApiMethod;
+        BotApiMethod<?> botApiMethod = null;
         if (message.getChat().getType().equals("private")) {
             if (message.hasText()) {
                 botApiMethod = produceTextMessage(message, message.getChatId().toString());
@@ -55,8 +55,8 @@ public class MessageHandler {
             } else {
                 throw new IllegalArgumentException();
             }
-        } else {
-            return null;
+        } else if (!message.getNewChatMembers().isEmpty()){
+            message.getNewChatMembers().forEach(user -> manageUsersService.saluteNewGroupUser(user.getId().toString()));
         }
         return botApiMethod;
     }
