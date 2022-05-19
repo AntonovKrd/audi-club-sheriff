@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="1650386287301-1" author="v.antonov93@gmail.com">
+        <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet id="1650384746645-1" author="v.antonov93@gmail.com">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="chat_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_birth" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tg_nickname" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_registration" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="VARCHAR(1024)"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="phone" constraintName="uc_users_phone" tableName="users"/>
+        <addUniqueConstraint columnNames="tg_nickname" constraintName="uc_users_tg_nickname" tableName="users"/>
+    </changeSet>
+    <changeSet id="1650385165498-1" author="v.antonov93@gmail.com">
+        <createTable tableName="vehicles">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_vehicles"/>
+            </column>
+            <column name="license_plate" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="model" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="license_plate" constraintName="uc_vehicles_license_plate"
+                             tableName="vehicles"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="vehicles" constraintName="FK_VEHICLES_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1650385208502-1" author="v.antonov93@gmail.com">
+        <createTable tableName="temp_data">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_temp_data"/>
+            </column>
+            <column name="chat_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stage" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="date_event" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
