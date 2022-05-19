@@ -18,7 +18,7 @@ public class Vehicle {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
-    @GeneratedValue(generator = "base64_generated_id")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "license_plate", nullable = false, unique = true)

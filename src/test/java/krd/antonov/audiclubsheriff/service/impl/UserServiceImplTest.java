@@ -20,14 +20,14 @@ public class UserServiceImplTest {
 
     @Test
     public void create() {
-        Mockito.when(userService.create("test","Владимир",
+        Mockito.when(userService.create("test", "Владимир",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
-                "89181144744", "Краснодар", true)).thenReturn(getMockEntity());
-        AssertionsForClassTypes.assertThat(userService.create("test","Владимир",
+                "89181144744", "Краснодар", "", true)).thenReturn(getMockEntity());
+        AssertionsForClassTypes.assertThat(userService.create("test", "Владимир",
                 LocalDate.of(1997, 6, 3),
                 "@antonov_krd",
-                "89181144744", "Краснодар", true)).isNotNull();
+                "89181144744", "Краснодар", "", true)).isNotNull();
     }
 
     @Test
@@ -70,6 +70,7 @@ public class UserServiceImplTest {
                 .setTgNickname("@antonov_krd")
                 .setPhone("89181144744")
                 .setCity("Краснодар")
-                .setActive(true);
+                .setActive(true)
+                .setComment("");
     }
 }

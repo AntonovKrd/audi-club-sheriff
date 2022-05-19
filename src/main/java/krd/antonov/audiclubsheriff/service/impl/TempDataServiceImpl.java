@@ -7,7 +7,6 @@ import krd.antonov.audiclubsheriff.service.TempDataService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,7 +21,7 @@ public class TempDataServiceImpl implements TempDataService {
     @Override
     @Transactional
     public TempData create(String chatId, Integer stage, String value) {
-        TempData tempData = new TempData().setChatId(chatId).setStage(stage).setValue(value).setDateEvent(LocalDate.now());
+        TempData tempData = new TempData().setChatId(chatId).setStage(stage).setValue(value);
         tempDataRepository.save(tempData);
         return tempData;
     }

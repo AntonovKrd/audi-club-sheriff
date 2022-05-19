@@ -67,9 +67,9 @@ public class ManageUsersService {
         keyboardSetter.setAcceptInlineKeyboard(sendMessage, user.getChatId());
         telegramApiService.sendPhoto(adminsChatId.getDeveloper(), fileId, "");
         telegramApiService.sendMessage(sendMessage);
-        //telegramApiService.sendPhoto(adminsChatId.getAdmin(), fileId, "");
-        //sendMessage.setChatId(adminsChatId.getAdmin());
-        //telegramApiService.sendMessage(sendMessage);
+        telegramApiService.sendPhoto(adminsChatId.getAdmin(), fileId, "");
+        sendMessage.setChatId(adminsChatId.getAdmin());
+        telegramApiService.sendMessage(sendMessage);
     }
 
     public void activateUser(String chatId) throws UserNotFoundException, TelegramSendMessageException, TelegramCreateChatLinkException {

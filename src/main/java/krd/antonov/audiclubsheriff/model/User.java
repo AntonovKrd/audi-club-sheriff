@@ -3,6 +3,7 @@ package krd.antonov.audiclubsheriff.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -22,7 +23,7 @@ public class User {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
-    @GeneratedValue(generator = "base64_generated_id")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -41,6 +42,7 @@ public class User {
     private String phone;
 
     @Column(name = "date_registration", nullable = false)
+    @CreationTimestamp
     private LocalDateTime dateRegistration;
 
     @Column(name = "city", nullable = false)

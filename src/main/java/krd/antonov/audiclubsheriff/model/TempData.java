@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Table(name = "temp_data")
@@ -19,7 +20,7 @@ public class TempData {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
-    @GeneratedValue(generator = "base64_generated_id")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "chat_id", nullable = false)
@@ -32,7 +33,8 @@ public class TempData {
     private String value;
 
     @Column(name = "date_event", nullable = false)
-    private LocalDate dateEvent;
+    @CreationTimestamp
+    private LocalDateTime dateEvent;
 
     @Override
     public boolean equals(Object o) {
